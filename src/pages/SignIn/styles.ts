@@ -2,6 +2,8 @@ import styled from 'styled-components';
 
 export const Container = styled.div`
   height: 100vh;
+  display: flex;
+  flex-direction: column;
 `;
 
 export const Header = styled.div`
@@ -33,4 +35,16 @@ export const Header = styled.div`
       }
     }
   }
+`;
+
+export const Main = styled.div`
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+export const FormContainer = styled.div`
+  background: #5636d3;
+  padding: 250px;
 `;

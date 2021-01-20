@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 import Logo from '../../assets/logo.svg';
-import { Container, Header } from './styles';
+import { Container, Header, Main, FormContainer } from './styles';
 
 const SignIn: React.FC = () => {
   return (
@@ -15,6 +15,9 @@ const SignIn: React.FC = () => {
           </nav>
         </header>
       </Header>
+      <Main>
+        <FormContainer />
+      </Main>
     </Container>
   );
 };
