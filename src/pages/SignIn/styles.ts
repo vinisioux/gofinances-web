@@ -60,3 +60,15 @@ export const Container = styled.div`
     }
   }
 `;
+
+export const Main = styled.div`
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+export const FormContainer = styled.div`
+  background: #5636d3;
+  padding: 250px;
+`;
