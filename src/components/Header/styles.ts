@@ -31,6 +31,17 @@ export const Container = styled.div<ContainerProps>`
           opacity: 0.6;
         }
       }
+
+      button {
+        margin-left: 64px;
+        background: 0;
+        border: 0;
+        transition: opacity 0.2s;
+
+        &:hover {
+          opacity: 0.6;
+        }
+      }
     }
   }
 `;
