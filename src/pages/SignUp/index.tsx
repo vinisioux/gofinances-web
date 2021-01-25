@@ -17,6 +17,10 @@ const SignUp: React.FC = () => {
     async (event: FormEvent) => {
       event.preventDefault();
 
+      if (!!name === false) return;
+      if (!!email === false) return;
+      if (!!password === false) return;
+
       await api
         .post('users', {
           name,

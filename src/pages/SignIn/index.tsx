@@ -15,6 +15,9 @@ const SignIn: React.FC = () => {
     async (event: FormEvent) => {
       event.preventDefault();
 
+      if (!!email === false) return;
+      if (!!password === false) return;
+
       await signIn({ email, password });
     },
     [password, signIn, email],
