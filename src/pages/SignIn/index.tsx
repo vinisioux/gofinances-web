@@ -22,7 +22,7 @@ const SignIn: React.FC = () => {
 
   return (
     <Container>
-      <form data-testid="login-form" onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit}>
         <h2>Faça seu login</h2>
         <input
           type="text"
