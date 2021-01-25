@@ -1,5 +1,6 @@
 import React, { useState, FormEvent, useCallback } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 import api from '../../services/api';
 
@@ -10,17 +11,31 @@ const SignUp: React.FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
+  const history = useHistory();
+
   const handleSubmit = useCallback(
     async (event: FormEvent) => {
       event.preventDefault();
 
-      await api.post('users', {
-        name,
-        email,
-        password,
-      });
+      await api
+        .post('users', {
+          name,
+          email,
+          password,
+        })
+        .then(() => {
+          history.push('/');
+        })
+        .catch(error => {
+          if (error.response.data.message === 'e-mail address already used') {
+            return toast.error('E-mail já cadastrado.');
+          }
+          return toast.error(
+            'Ocorreu um erro ao realizar o cadastro.\nTente novamente mais tarde.',
+          );
+        });
     },
-    [name, password, email],
+    [name, password, email, history],
   );
 
   return (
