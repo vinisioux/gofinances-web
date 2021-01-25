@@ -1,4 +1,5 @@
 import React, { createContext, useCallback, useState, useContext } from 'react';
+import { toast } from 'react-toastify';
 import api from '../services/api';
 
 interface User {
@@ -40,19 +41,28 @@ export const AuthProvider: React.FC = ({ children }) => {
   });
 
   const signIn = useCallback(async ({ email, password }) => {
-    const response = await api.post('sessions', {
-      email,
-      password,
-    });
+    await api
+      .post('sessions', {
+        email,
+        password,
+      })
+      .then(response => {
+        const { token, user } = response.data;
 
-    const { token, user } = response.data;
+        localStorage.setItem('@GoFinances:token', token);
+        localStorage.setItem('@GoFinances:user', JSON.stringify(user));
 
-    localStorage.setItem('@GoFinances:token', token);
-    localStorage.setItem('@GoFinances:user', JSON.stringify(user));
+        api.defaults.headers.authorization = `Bearer ${token}`;
 
-    api.defaults.headers.authorization = `Bearer ${token}`;
-
-    setData({ token, user });
+        setData({ token, user });
+      })
+      .catch(error => {
+        if (
+          error.response.data.message === 'Incorrect email/password combination'
+        ) {
+          toast.error('E-mail ou senha incorreto, verifique novamente.');
+        }
+      });
   }, []);
 
   const signOut = useCallback(() => {
