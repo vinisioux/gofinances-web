@@ -1,5 +1,7 @@
 import React, { ChangeEvent, FormEvent, useCallback, useState } from 'react';
 import { toast } from 'react-toastify';
+import { useHistory } from 'react-router-dom';
+import api from '../../services/api';
 
 import Header from '../../components/Header';
 
@@ -11,6 +13,8 @@ const Transaction: React.FC = () => {
   const [selectedType, setSelectedType] = useState('0');
   const [selectedCategory, setSelectedCategory] = useState('0');
   const [newCategory, setNewCategory] = useState('');
+
+  const history = useHistory();
 
   const handleSelectType = useCallback(
     (event: ChangeEvent<HTMLSelectElement>) => {
@@ -29,7 +33,7 @@ const Transaction: React.FC = () => {
   );
 
   const handleSubmit = useCallback(
-    (event: FormEvent) => {
+    async (event: FormEvent) => {
       event.preventDefault();
       if (!title) {
         return toast.error('Título inválido, favor verificar');
@@ -58,9 +62,13 @@ const Transaction: React.FC = () => {
         category: newCategory || selectedCategory,
       };
 
-      return console.log(data);
+      await api.post('transactions', data);
+
+      toast.success('Transação registrada!');
+
+      return history.push('/dashboard');
     },
-    [title, newCategory, value, selectedCategory, selectedType],
+    [title, newCategory, value, selectedCategory, selectedType, history],
   );
 
   return (
