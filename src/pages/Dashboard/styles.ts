@@ -91,5 +91,22 @@ export const TableContainer = styled.section`
     td:last-child {
       border-radius: 0 8px 8px 0;
     }
+
+    .transaction-actions {
+      button {
+        background: transparent;
+        border: 0;
+        color: #fff;
+        transition: 0.2s;
+
+        &:hover {
+          opacity: 0.6;
+        }
+      }
+
+      > button {
+        margin-right: 5px;
+      }
+    }
   }
 `;

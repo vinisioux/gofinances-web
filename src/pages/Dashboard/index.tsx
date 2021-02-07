@@ -1,5 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
+import { FiEdit, FiTrash2 } from 'react-icons/fi';
 
+import { toast } from 'react-toastify';
 import income from '../../assets/income.svg';
 import outcome from '../../assets/outcome.svg';
 import total from '../../assets/total.svg';
@@ -34,31 +36,50 @@ const Dashboard: React.FC = () => {
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [balance, setBalance] = useState<Balance>({} as Balance);
 
-  useEffect(() => {
-    async function loadTransactions(): Promise<void> {
-      const response = await api.get('/transactions');
-      setTransactions(
-        response.data.transactions.map((transaction: Transaction) => ({
-          id: transaction.id,
-          title: transaction.title,
-          value: transaction.value,
-          formattedValue: formatValue(transaction.value),
-          formattedDate: formatDate(transaction.created_at),
-          type: transaction.type,
-          category: { title: transaction.category.title },
-          created_at: transaction.created_at,
-        })),
-      );
+  const loadTransactions = useCallback(async () => {
+    const response = await api.get('/transactions');
+    setTransactions(
+      response.data.transactions.map((transaction: Transaction) => ({
+        id: transaction.id,
+        title: transaction.title,
+        value: transaction.value,
+        formattedValue: formatValue(transaction.value),
+        formattedDate: formatDate(transaction.created_at),
+        type: transaction.type,
+        category: { title: transaction.category.title },
+        created_at: transaction.created_at,
+      })),
+    );
 
-      setBalance({
-        income: formatValue(response.data.balance.income),
-        outcome: formatValue(response.data.balance.outcome),
-        total: formatValue(response.data.balance.total),
-      });
-    }
-
-    loadTransactions();
+    setBalance({
+      income: formatValue(response.data.balance.income),
+      outcome: formatValue(response.data.balance.outcome),
+      total: formatValue(response.data.balance.total),
+    });
   }, []);
+
+  useEffect(() => {
+    loadTransactions();
+  }, [loadTransactions]);
+
+  // const handleEditUser = useCallback(
+  //   (id: number) => {
+  //     history.push({
+  //       pathname: `/form-user/${id}`,
+  //       state: { id },
+  //     });
+  //   },
+  //   [history],
+  // );
+
+  const handleDeleteTransaction = useCallback(
+    async (id: string) => {
+      await api.delete(`transactions/${id}`);
+      toast.success('Transação removida com sucesso!');
+      loadTransactions();
+    },
+    [loadTransactions],
+  );
 
   return (
     <>
@@ -96,6 +117,7 @@ const Dashboard: React.FC = () => {
                 <th>Preço</th>
                 <th>Categoria</th>
                 <th>Data</th>
+                <th>Ações</th>
               </tr>
             </thead>
 
@@ -110,6 +132,18 @@ const Dashboard: React.FC = () => {
                   )}
                   <td>{transaction.category.title}</td>
                   <td>{transaction.formattedDate}</td>
+                  <td>{transaction.formattedDate}</td>
+                  <td className="transaction-actions">
+                    <button type="button" onClick={() => console.log('edit')}>
+                      <FiEdit size={20} color="#3bafda" />
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => handleDeleteTransaction(transaction.id)}
+                    >
+                      <FiTrash2 size={20} color="#ff4b5b" />
+                    </button>
+                  </td>
                 </tr>
               ))}
             </tbody>
