@@ -132,7 +132,6 @@ const Dashboard: React.FC = () => {
                   )}
                   <td>{transaction.category.title}</td>
                   <td>{transaction.formattedDate}</td>
-                  <td>{transaction.formattedDate}</td>
                   <td className="transaction-actions">
                     <button type="button" onClick={() => console.log('edit')}>
                       <FiEdit size={20} color="#3bafda" />
