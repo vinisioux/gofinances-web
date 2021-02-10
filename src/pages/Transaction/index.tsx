@@ -1,4 +1,4 @@
-import React, { ChangeEvent, FormEvent, useCallback, useState } from 'react';
+import React from 'react';
 import { toast } from 'react-toastify';
 import { useHistory } from 'react-router-dom';
 import { Formik } from 'formik';
@@ -6,73 +6,11 @@ import { Formik } from 'formik';
 import api from '../../services/api';
 
 import Header from '../../components/Header';
-import Input from '../../components/Input';
 
 import { Container } from './styles';
 
 const Transaction: React.FC = () => {
-  // const [title, setTitle] = useState('');
-  // const [value, setValue] = useState('');
-  // const [selectedType, setSelectedType] = useState('0');
-  // const [selectedCategory, setSelectedCategory] = useState('0');
-  // const [newCategory, setNewCategory] = useState('');
-
   const history = useHistory();
-
-  // const handleSelectType = useCallback(
-  //   (event: ChangeEvent<HTMLSelectElement>) => {
-  //     const type = event.target.value;
-  //     setSelectedType(type);
-  //   },
-  //   [],
-  // );
-
-  // const handleSelectCategory = useCallback(
-  //   (event: ChangeEvent<HTMLSelectElement>) => {
-  //     const category = event.target.value;
-  //     setSelectedCategory(category);
-  //   },
-  //   [],
-  // );
-
-  // const handleSubmit = useCallback(
-  //   async (event: FormEvent) => {
-  //     event.preventDefault();
-  //     if (!title) {
-  //       return toast.error('Título inválido, favor verificar');
-  //     }
-
-  //     if (!value) {
-  //       return toast.error('Valor inválido, favor verificar');
-  //     }
-
-  //     if (selectedType === '0') {
-  //       return toast.error('Tipo inválido, favor verificar');
-  //     }
-
-  //     if (selectedCategory === '0') {
-  //       return toast.error('Categoria inválido, favor verificar');
-  //     }
-
-  //     if (selectedCategory === 'new-category' && !newCategory) {
-  //       return toast.error('Categoria inválido, favor verificar');
-  //     }
-
-  //     const data = {
-  //       title,
-  //       value,
-  //       type: selectedType,
-  //       category: newCategory || selectedCategory,
-  //     };
-
-  //     await api.post('transactions', data);
-
-  //     toast.success('Transação registrada!');
-
-  //     return history.push('/dashboard');
-  //   },
-  //   [title, newCategory, value, selectedCategory, selectedType, history],
-  // );
 
   return (
     <>
@@ -88,8 +26,18 @@ const Transaction: React.FC = () => {
             newCategory: '',
           }}
           onSubmit={async values => {
-            // await api.post('transactions', values);
-            console.log(values);
+            const data = {
+              title: values.title,
+              value: values.value,
+              type: values.selectedType,
+              category: values.newCategory || values.selectedCategory,
+            };
+
+            await api.post('transactions', data);
+
+            toast.success('Transação registrada!');
+
+            return history.push('/dashboard');
           }}
         >
           {({
@@ -100,7 +48,6 @@ const Transaction: React.FC = () => {
             handleBlur,
             handleSubmit,
             isSubmitting,
-            /* and other goodies */
           }) => (
             <form onSubmit={handleSubmit}>
               <h2>Cadastre uma transação</h2>
@@ -111,10 +58,11 @@ const Transaction: React.FC = () => {
                 onChange={handleChange}
               />
 
-              <Input
-                mask="currency"
-                type="text"
-                placeholder="Valor"
+              <input
+                type="number"
+                min="0.00"
+                step="0.01"
+                placeholder="Valor. (150.29)"
                 name="value"
                 onChange={handleChange}
               />
@@ -145,7 +93,11 @@ const Transaction: React.FC = () => {
                   onChange={handleChange}
                 />
               )}
-              <button type="submit">Cadastrar</button>
+              {isSubmitting ? (
+                <span>Salvando...</span>
+              ) : (
+                <button type="submit">Cadastrar</button>
+              )}
             </form>
           )}
         </Formik>
