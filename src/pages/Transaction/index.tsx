@@ -2,6 +2,7 @@ import React from 'react';
 import { toast } from 'react-toastify';
 import { useHistory } from 'react-router-dom';
 import { Formik } from 'formik';
+import * as Yup from 'yup';
 
 import api from '../../services/api';
 
@@ -11,6 +12,20 @@ import { Container } from './styles';
 
 const Transaction: React.FC = () => {
   const history = useHistory();
+
+  const formSchema = Yup.object().shape({
+    title: Yup.string()
+      .min(3, 'Título muito pequeno')
+      .max(20, 'Título muito grande')
+      .required('O título é um campo obrigatório'),
+    value: Yup.number()
+      .min(0.01, 'Valor não permitido')
+      .max(9999999, 'Valor não permitido')
+      .required('Digite um valor'),
+    selectedType: Yup.string().required('Selecione um tipo de transação'),
+    selectedCategory: Yup.string().required('Selecione uma categoria'),
+    newCategory: Yup.string(),
+  });
 
   return (
     <>
@@ -25,6 +40,7 @@ const Transaction: React.FC = () => {
             selectedCategory: '',
             newCategory: '',
           }}
+          validationSchema={formSchema}
           onSubmit={async values => {
             const data = {
               title: values.title,
@@ -45,7 +61,6 @@ const Transaction: React.FC = () => {
             errors,
             touched,
             handleChange,
-            handleBlur,
             handleSubmit,
             isSubmitting,
           }) => (
@@ -57,6 +72,7 @@ const Transaction: React.FC = () => {
                 name="title"
                 onChange={handleChange}
               />
+              {touched.title && errors.title && <div>{errors.title}</div>}
 
               <input
                 type="number"
@@ -66,12 +82,16 @@ const Transaction: React.FC = () => {
                 name="value"
                 onChange={handleChange}
               />
+              {touched.value && errors.value && <div>{errors.value}</div>}
 
               <select id="type" name="selectedType" onChange={handleChange}>
                 <option value="0">Tipo de transação...</option>
                 <option value="income">Entrada</option>
                 <option value="outcome">Saída</option>
               </select>
+              {touched.selectedType && errors.selectedType && (
+                <div>{errors.title}</div>
+              )}
 
               <select
                 id="category"
@@ -84,6 +104,9 @@ const Transaction: React.FC = () => {
                 <option value="Outros">Outros</option>
                 <option value="new-category">Cadastrar nova categoria</option>
               </select>
+              {touched.selectedCategory && errors.selectedCategory && (
+                <div>{errors.selectedCategory}</div>
+              )}
 
               {values.selectedCategory === 'new-category' && (
                 <input
