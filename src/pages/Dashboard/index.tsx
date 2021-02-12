@@ -35,9 +35,11 @@ interface Balance {
 const Dashboard: React.FC = () => {
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [balance, setBalance] = useState<Balance>({} as Balance);
+  const [currentPage, setCurrentPage] = useState(1);
+  // const [totalTransactions, setTotalTransactions] = useState(0);
 
   const loadTransactions = useCallback(async () => {
-    const response = await api.get('/transactions');
+    const response = await api.get(`/transactions?page=${currentPage}`);
     setTransactions(
       response.data.transactions.map((transaction: Transaction) => ({
         id: transaction.id,
@@ -56,11 +58,31 @@ const Dashboard: React.FC = () => {
       outcome: formatValue(response.data.balance.outcome),
       total: formatValue(response.data.balance.total),
     });
-  }, []);
+
+    // setTotalTransactions(response.data.totalTransactions);
+  }, [currentPage]);
 
   useEffect(() => {
     loadTransactions();
   }, [loadTransactions]);
+
+  const handleChangePage = useCallback(
+    (prevOrNext: string) => {
+      if (currentPage === 1 && prevOrNext === 'prev') {
+        return;
+      }
+      if (prevOrNext === 'prev' && currentPage > 1) {
+        setCurrentPage(currentPage - 1);
+      }
+      if (transactions.length < 10 && prevOrNext === 'next') {
+        return;
+      }
+      if (currentPage >= 1 && prevOrNext === 'next') {
+        setCurrentPage(currentPage + 1);
+      }
+    },
+    [currentPage, transactions],
+  );
 
   // const handleEditUser = useCallback(
   //   (id: number) => {
@@ -120,7 +142,6 @@ const Dashboard: React.FC = () => {
                 <th>Ações</th>
               </tr>
             </thead>
-
             <tbody>
               {transactions.map(transaction => (
                 <tr key={transaction.id}>
@@ -147,6 +168,14 @@ const Dashboard: React.FC = () => {
               ))}
             </tbody>
           </table>
+          <div>
+            <button type="button" onClick={() => handleChangePage('prev')}>
+              anterior
+            </button>
+            <button type="button" onClick={() => handleChangePage('next')}>
+              proximo
+            </button>
+          </div>
         </TableContainer>
       </Container>
     </>
