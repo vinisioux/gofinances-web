@@ -1,46 +1,67 @@
-import React, { useState, FormEvent, useCallback } from 'react';
+import React from 'react';
+import { Formik } from 'formik';
 import { Link } from 'react-router-dom';
+import * as Yup from 'yup';
 
 import { useAuth } from '../../hooks/auth';
 
 import { Container } from './styles';
 
 const SignIn: React.FC = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-
   const { signIn } = useAuth();
 
-  const handleSubmit = useCallback(
-    async (event: FormEvent) => {
-      event.preventDefault();
-
-      if (!!email === false) return;
-      if (!!password === false) return;
-
-      await signIn({ email, password });
-    },
-    [password, signIn, email],
-  );
+  const formSchema = Yup.object().shape({
+    email: Yup.string()
+      .email('E-mail inválido, verifique novamente')
+      .required('O e-mail é um campo obrigatório'),
+    password: Yup.string().required('Digite sua senha'),
+  });
 
   return (
     <Container>
-      <form onSubmit={handleSubmit}>
-        <h2>Faça seu login</h2>
-        <input
-          type="text"
-          placeholder="E-mail"
-          value={email}
-          onChange={event => setEmail(event.target.value)}
-        />
-        <input
-          type="password"
-          placeholder="Senha"
-          value={password}
-          onChange={event => setPassword(event.target.value)}
-        />
-        <button type="submit">Entrar</button>
-      </form>
+      <Formik
+        initialValues={{
+          email: '',
+          password: '',
+        }}
+        validationSchema={formSchema}
+        onSubmit={async values => {
+          await signIn({ email: values.email, password: values.password });
+        }}
+      >
+        {({ errors, touched, handleChange, handleSubmit, isSubmitting }) => (
+          <form onSubmit={handleSubmit}>
+            <h2>Faça seu login</h2>
+            <input
+              type="text"
+              placeholder="E-mail"
+              name="email"
+              onChange={handleChange}
+            />
+            {touched.email && errors.email && (
+              <span className="error-message">{errors.email}</span>
+            )}
+
+            <input
+              type="password"
+              placeholder="Senha"
+              name="password"
+              onChange={handleChange}
+            />
+            {touched.password && errors.password && (
+              <span className="error-message">{errors.password}</span>
+            )}
+
+            {isSubmitting ? (
+              <button type="button" style={{ cursor: 'not-allowed' }}>
+                Carregando...
+              </button>
+            ) : (
+              <button type="submit">Entrar</button>
+            )}
+          </form>
+        )}
+      </Formik>
       <Link to="/signup">Me cadastrar</Link>
     </Container>
   );

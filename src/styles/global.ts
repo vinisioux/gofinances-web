@@ -15,11 +15,16 @@ export default createGlobalStyle`
 
   body {
     background: #F0F2F5 ;
-    -webkit-font-smoothing: antialiased
+    -webkit-font-smoothing: antialiased;
   }
 
   body, input, button {
     font: 16px "Poppins", sans-serif;
+  }
+  
+  .error-message {
+    font-size: 12px;
+    color: #f33c39;
   }
 
   button {

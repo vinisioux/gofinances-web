@@ -36,7 +36,6 @@ const Dashboard: React.FC = () => {
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [balance, setBalance] = useState<Balance>({} as Balance);
   const [currentPage, setCurrentPage] = useState(1);
-  // const [totalTransactions, setTotalTransactions] = useState(0);
 
   const loadTransactions = useCallback(async () => {
     const response = await api.get(`/transactions?page=${currentPage}`);
@@ -58,8 +57,6 @@ const Dashboard: React.FC = () => {
       outcome: formatValue(response.data.balance.outcome),
       total: formatValue(response.data.balance.total),
     });
-
-    // setTotalTransactions(response.data.totalTransactions);
   }, [currentPage]);
 
   useEffect(() => {
