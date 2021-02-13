@@ -152,7 +152,6 @@ const Dashboard: React.FC = () => {
               </tr>
             </thead>
             <tbody>
-              {console.log('a')}
               {transactionsList.map(transaction => (
                 <tr key={transaction.id}>
                   <td className="title">{transaction.title}</td>
