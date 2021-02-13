@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { FiEdit, FiTrash2 } from 'react-icons/fi';
 
 import { toast } from 'react-toastify';
@@ -39,29 +39,38 @@ const Dashboard: React.FC = () => {
 
   const loadTransactions = useCallback(async () => {
     const response = await api.get(`/transactions?page=${currentPage}`);
-    setTransactions(
-      response.data.transactions.map((transaction: Transaction) => ({
-        id: transaction.id,
-        title: transaction.title,
-        value: transaction.value,
-        formattedValue: formatValue(transaction.value),
-        formattedDate: formatDate(transaction.created_at),
-        type: transaction.type,
-        category: { title: transaction.category.title },
-        created_at: transaction.created_at,
-      })),
-    );
+    setTransactions(response.data.transactions);
 
     setBalance({
-      income: formatValue(response.data.balance.income),
-      outcome: formatValue(response.data.balance.outcome),
-      total: formatValue(response.data.balance.total),
+      income: response.data.balance.income,
+      outcome: response.data.balance.outcome,
+      total: response.data.balance.total,
     });
   }, [currentPage]);
 
   useEffect(() => {
     loadTransactions();
   }, [loadTransactions]);
+
+  const transactionsList = useMemo(() => {
+    return transactions.map(transaction => ({
+      ...transaction,
+      formattedValue: formatValue(transaction.value),
+      formattedDate: formatDate(transaction.created_at),
+    }));
+  }, [transactions]);
+
+  const incomeBalance = useMemo(() => {
+    return formatValue(Number(balance.income));
+  }, [balance]);
+
+  const outcomeBalance = useMemo(() => {
+    return formatValue(Number(balance.outcome));
+  }, [balance]);
+
+  const totalBalance = useMemo(() => {
+    return formatValue(Number(balance.total));
+  }, [balance]);
 
   const handleChangePage = useCallback(
     (prevOrNext: string) => {
@@ -95,9 +104,12 @@ const Dashboard: React.FC = () => {
     async (id: string) => {
       await api.delete(`transactions/${id}`);
       toast.success('Transação removida com sucesso!');
-      loadTransactions();
+      const newTransactions = transactions.filter(
+        transaction => transaction.id !== id,
+      );
+      setTransactions(newTransactions);
     },
-    [loadTransactions],
+    [transactions],
   );
 
   return (
@@ -110,21 +122,21 @@ const Dashboard: React.FC = () => {
               <p>Entradas</p>
               <img src={income} alt="Income" />
             </header>
-            <h1 data-testid="balance-income">{balance.income}</h1>
+            <h1 data-testid="balance-income">{incomeBalance}</h1>
           </Card>
           <Card>
             <header>
               <p>Saídas</p>
               <img src={outcome} alt="Outcome" />
             </header>
-            <h1 data-testid="balance-outcome">{balance.outcome}</h1>
+            <h1 data-testid="balance-outcome">{outcomeBalance}</h1>
           </Card>
           <Card total>
             <header>
               <p>Total</p>
               <img src={total} alt="Total" />
             </header>
-            <h1 data-testid="balance-total">{balance.total}</h1>
+            <h1 data-testid="balance-total">{totalBalance}</h1>
           </Card>
         </CardContainer>
 
@@ -140,7 +152,8 @@ const Dashboard: React.FC = () => {
               </tr>
             </thead>
             <tbody>
-              {transactions.map(transaction => (
+              {console.log('a')}
+              {transactionsList.map(transaction => (
                 <tr key={transaction.id}>
                   <td className="title">{transaction.title}</td>
                   {transaction.type === 'income' ? (
