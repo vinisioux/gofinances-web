@@ -131,21 +131,33 @@ const Dashboard: React.FC = () => {
               <p>Entradas</p>
               <img src={income} alt="Income" />
             </header>
-            <h1 data-testid="balance-income">{incomeBalance}</h1>
+            {incomeBalance === 'R$ NaN' ? (
+              <h1>...</h1>
+            ) : (
+              <h1 data-testid="balance-income">{incomeBalance}</h1>
+            )}
           </Card>
           <Card>
             <header>
               <p>Saídas</p>
               <img src={outcome} alt="Outcome" />
             </header>
-            <h1 data-testid="balance-outcome">{outcomeBalance}</h1>
+            {outcomeBalance === 'R$ NaN' ? (
+              <h1>...</h1>
+            ) : (
+              <h1 data-testid="balance-income">{outcomeBalance}</h1>
+            )}
           </Card>
           <Card total>
             <header>
               <p>Total</p>
               <img src={total} alt="Total" />
             </header>
-            <h1 data-testid="balance-total">{totalBalance}</h1>
+            {outcomeBalance === 'R$ NaN' ? (
+              <h1>...</h1>
+            ) : (
+              <h1 data-testid="balance-total">{totalBalance}</h1>
+            )}
           </Card>
         </CardContainer>
 
