@@ -41,6 +41,7 @@ const Dashboard: React.FC = () => {
   const [editingTransaction, setEditingTransaction] = useState<Transaction>(
     {} as Transaction,
   );
+  const [totalTransactions, setTotalTransactions] = useState(0);
 
   const openModal = useCallback((transaction: Transaction) => {
     setEditingTransaction(transaction);
@@ -60,6 +61,8 @@ const Dashboard: React.FC = () => {
       outcome: response.data.balance.outcome,
       total: response.data.balance.total,
     });
+
+    setTotalTransactions(response.data.totalTransactions);
   }, [currentPage]);
 
   useEffect(() => {
@@ -88,20 +91,21 @@ const Dashboard: React.FC = () => {
 
   const handleChangePage = useCallback(
     (prevOrNext: string) => {
+      const totalPages = Math.ceil(totalTransactions / 10);
       if (currentPage === 1 && prevOrNext === 'prev') {
         return;
       }
       if (prevOrNext === 'prev' && currentPage > 1) {
         setCurrentPage(currentPage - 1);
       }
-      if (transactions.length < 10 && prevOrNext === 'next') {
+      if (totalPages === currentPage && prevOrNext === 'next') {
         return;
       }
       if (currentPage >= 1 && prevOrNext === 'next') {
         setCurrentPage(currentPage + 1);
       }
     },
-    [currentPage, transactions],
+    [currentPage, totalTransactions],
   );
 
   const handleDeleteTransaction = useCallback(
