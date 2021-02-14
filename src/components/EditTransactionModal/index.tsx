@@ -56,8 +56,6 @@ const EditTransactionModal: React.FC<EditModalProps> = ({
       .max(9999999, 'Valor não permitido')
       .required('Digite um valor'),
     selectedType: Yup.string().required('Selecione um tipo de transação'),
-    selectedCategory: Yup.string().required('Selecione uma categoria'),
-    newCategory: Yup.string(),
   });
 
   return (
@@ -102,7 +100,9 @@ const EditTransactionModal: React.FC<EditModalProps> = ({
                 value={values.title}
                 onChange={handleChange}
               />
-              {touched.title && errors.title && <div>{errors.title}</div>}
+              {touched.title && errors.title && (
+                <span className="error-message">{errors.title}</span>
+              )}
 
               <input
                 type="number"
@@ -113,7 +113,9 @@ const EditTransactionModal: React.FC<EditModalProps> = ({
                 value={values.value}
                 onChange={handleChange}
               />
-              {touched.value && errors.value && <div>{errors.value}</div>}
+              {touched.value && errors.value && (
+                <span className="error-message">{errors.value}</span>
+              )}
 
               <select
                 id="type"
@@ -126,7 +128,7 @@ const EditTransactionModal: React.FC<EditModalProps> = ({
                 <option value="outcome">Saída</option>
               </select>
               {touched.selectedType && errors.selectedType && (
-                <div>{errors.title}</div>
+                <span className="error-message">{errors.selectedType}</span>
               )}
 
               {isSubmitting ? (

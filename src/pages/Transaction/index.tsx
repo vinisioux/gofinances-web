@@ -72,7 +72,9 @@ const Transaction: React.FC = () => {
                 name="title"
                 onChange={handleChange}
               />
-              {touched.title && errors.title && <div>{errors.title}</div>}
+              {touched.title && errors.title && (
+                <span className="error-message">{errors.title}</span>
+              )}
 
               <input
                 type="number"
@@ -82,7 +84,9 @@ const Transaction: React.FC = () => {
                 name="value"
                 onChange={handleChange}
               />
-              {touched.value && errors.value && <div>{errors.value}</div>}
+              {touched.value && errors.value && (
+                <span className="error-message">{errors.value}</span>
+              )}
 
               <select id="type" name="selectedType" onChange={handleChange}>
                 <option value="0">Tipo de transação...</option>
@@ -90,7 +94,7 @@ const Transaction: React.FC = () => {
                 <option value="outcome">Saída</option>
               </select>
               {touched.selectedType && errors.selectedType && (
-                <div>{errors.title}</div>
+                <span className="error-message">{errors.title}</span>
               )}
 
               <select
@@ -105,7 +109,7 @@ const Transaction: React.FC = () => {
                 <option value="new-category">Cadastrar nova categoria</option>
               </select>
               {touched.selectedCategory && errors.selectedCategory && (
-                <div>{errors.selectedCategory}</div>
+                <span className="error-message">{errors.selectedCategory}</span>
               )}
 
               {values.selectedCategory === 'new-category' && (
