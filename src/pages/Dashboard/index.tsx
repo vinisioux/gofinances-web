@@ -42,6 +42,7 @@ const Dashboard: React.FC = () => {
     {} as Transaction,
   );
   const [totalTransactions, setTotalTransactions] = useState(0);
+  const [totalPages, setTotalPages] = useState(0);
 
   const openModal = useCallback((transaction: Transaction) => {
     setEditingTransaction(transaction);
@@ -63,7 +64,8 @@ const Dashboard: React.FC = () => {
     });
 
     setTotalTransactions(response.data.totalTransactions);
-  }, [currentPage]);
+    setTotalPages(Math.ceil(totalTransactions / 10));
+  }, [currentPage, totalTransactions]);
 
   useEffect(() => {
     loadTransactions();
@@ -91,7 +93,6 @@ const Dashboard: React.FC = () => {
 
   const handleChangePage = useCallback(
     (prevOrNext: string) => {
-      const totalPages = Math.ceil(totalTransactions / 10);
       if (currentPage === 1 && prevOrNext === 'prev') {
         return;
       }
@@ -105,7 +106,7 @@ const Dashboard: React.FC = () => {
         setCurrentPage(currentPage + 1);
       }
     },
-    [currentPage, totalTransactions],
+    [currentPage, totalPages],
   );
 
   const handleDeleteTransaction = useCallback(
