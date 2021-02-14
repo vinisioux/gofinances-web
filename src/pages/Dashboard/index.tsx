@@ -1,5 +1,10 @@
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
-import { FiEdit, FiTrash2 } from 'react-icons/fi';
+import {
+  FiEdit,
+  FiTrash2,
+  FiChevronRight,
+  FiChevronLeft,
+} from 'react-icons/fi';
 
 import { toast } from 'react-toastify';
 import income from '../../assets/income.svg';
@@ -14,7 +19,13 @@ import EditTransactionModal from '../../components/EditTransactionModal';
 import formatValue from '../../utils/formatValue';
 import formatDate from '../../utils/formatDate';
 
-import { Container, CardContainer, Card, TableContainer } from './styles';
+import {
+  Container,
+  CardContainer,
+  Card,
+  TableContainer,
+  PagesButtonsContainer,
+} from './styles';
 
 interface Transaction {
   id: string;
@@ -206,14 +217,14 @@ const Dashboard: React.FC = () => {
               ))}
             </tbody>
           </table>
-          <div>
+          <PagesButtonsContainer>
             <button type="button" onClick={() => handleChangePage('prev')}>
-              anterior
+              <FiChevronLeft />
             </button>
             <button type="button" onClick={() => handleChangePage('next')}>
-              proximo
+              <FiChevronRight />
             </button>
-          </div>
+          </PagesButtonsContainer>
         </TableContainer>
       </Container>
     </>

@@ -110,3 +110,31 @@ export const TableContainer = styled.section`
     }
   }
 `;
+
+export const PagesButtonsContainer = styled.div`
+  margin-top: 10px;
+  display: flex;
+  justify-content: center;
+  align-self: center;
+
+  button {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    border: 0;
+    background: #5636d3;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    svg {
+      color: #fff;
+      width: 25px;
+      height: 25px;
+    }
+
+    & + button {
+      margin-left: 5px;
+    }
+  }
+`;
