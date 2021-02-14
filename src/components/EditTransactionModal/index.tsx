@@ -68,8 +68,6 @@ const EditTransactionModal: React.FC<EditModalProps> = ({
             title: editingTransaction.title,
             value: editingTransaction.value,
             selectedType: editingTransaction.type,
-            selectedCategory: editingTransaction.category?.title,
-            newCategory: '',
           }}
           validationSchema={formSchema}
           onSubmit={async values => {
@@ -77,7 +75,6 @@ const EditTransactionModal: React.FC<EditModalProps> = ({
               title: values.title,
               value: values.value,
               type: values.selectedType,
-              category: values.newCategory || values.selectedCategory,
             };
 
             await api.put(`transactions/${editingTransaction.id}`, data);
@@ -132,31 +129,6 @@ const EditTransactionModal: React.FC<EditModalProps> = ({
                 <div>{errors.title}</div>
               )}
 
-              <select
-                id="category"
-                name="selectedCategory"
-                onChange={handleChange}
-                value={values.selectedCategory}
-              >
-                <option value="0">Categoria...</option>
-                <option value="comidas">Comidas</option>
-                <option value="transporte">Transporte</option>
-                <option value="outros">Outros</option>
-                <option value="new-category">Cadastrar nova categoria</option>
-              </select>
-              {touched.selectedCategory && errors.selectedCategory && (
-                <div>{errors.selectedCategory}</div>
-              )}
-
-              {values.selectedCategory === 'new-category' && (
-                <input
-                  type="text"
-                  placeholder="Nova Categoria"
-                  name="newCategory"
-                  value={values.newCategory}
-                  onChange={handleChange}
-                />
-              )}
               {isSubmitting ? (
                 <span>Salvando...</span>
               ) : (
