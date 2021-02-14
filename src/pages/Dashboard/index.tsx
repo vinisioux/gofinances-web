@@ -9,6 +9,7 @@ import total from '../../assets/total.svg';
 import api from '../../services/api';
 
 import Header from '../../components/Header';
+import EditTransactionModal from '../../components/EditTransactionModal';
 
 import formatValue from '../../utils/formatValue';
 import formatDate from '../../utils/formatDate';
@@ -36,6 +37,19 @@ const Dashboard: React.FC = () => {
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [balance, setBalance] = useState<Balance>({} as Balance);
   const [currentPage, setCurrentPage] = useState(1);
+  const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [editingTransaction, setEditingTransaction] = useState<Transaction>(
+    {} as Transaction,
+  );
+
+  const openModal = useCallback((transaction: Transaction) => {
+    setEditingTransaction(transaction);
+    setModalIsOpen(true);
+  }, []);
+
+  const closeModal = useCallback(() => {
+    setModalIsOpen(false);
+  }, []);
 
   const loadTransactions = useCallback(async () => {
     const response = await api.get(`/transactions?page=${currentPage}`);
@@ -90,16 +104,6 @@ const Dashboard: React.FC = () => {
     [currentPage, transactions],
   );
 
-  // const handleEditUser = useCallback(
-  //   (id: number) => {
-  //     history.push({
-  //       pathname: `/form-user/${id}`,
-  //       state: { id },
-  //     });
-  //   },
-  //   [history],
-  // );
-
   const handleDeleteTransaction = useCallback(
     async (id: string) => {
       await api.delete(`transactions/${id}`);
@@ -115,6 +119,11 @@ const Dashboard: React.FC = () => {
   return (
     <>
       <Header />
+      <EditTransactionModal
+        closeModal={closeModal}
+        isOpen={modalIsOpen}
+        editingTransaction={editingTransaction}
+      />
       <Container>
         <CardContainer>
           <Card>
@@ -163,7 +172,10 @@ const Dashboard: React.FC = () => {
                   <td>{transaction.category.title}</td>
                   <td>{transaction.formattedDate}</td>
                   <td className="transaction-actions">
-                    <button type="button" onClick={() => console.log('edit')}>
+                    <button
+                      type="button"
+                      onClick={() => openModal(transaction)}
+                    >
                       <FiEdit size={20} color="#3bafda" />
                     </button>
                     <button

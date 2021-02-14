@@ -1,16 +1,49 @@
+import { Formik } from 'formik';
 import React from 'react';
+import Modal from 'react-modal';
 import { toast } from 'react-toastify';
 import { useHistory } from 'react-router-dom';
-import { Formik } from 'formik';
 import * as Yup from 'yup';
 
 import api from '../../services/api';
 
-import Header from '../../components/Header';
-
 import { Container } from './styles';
 
-const Transaction: React.FC = () => {
+const customStyles = {
+  content: {
+    top: '50%',
+    left: '50%',
+    right: 'auto',
+    bottom: 'auto',
+    marginRight: '-50%',
+    transform: 'translate(-50%, -50%)',
+  },
+};
+
+interface EditTransaction {
+  id: string;
+  title: string;
+  value: number;
+  formattedValue: string;
+  formattedDate: string;
+  type: 'income' | 'outcome';
+  category: { title: string };
+  created_at: Date;
+}
+
+interface EditModalProps {
+  isOpen: boolean;
+  closeModal: () => void;
+  editingTransaction: EditTransaction;
+}
+
+Modal.setAppElement('#root');
+
+const EditTransactionModal: React.FC<EditModalProps> = ({
+  isOpen,
+  closeModal,
+  editingTransaction,
+}) => {
   const history = useHistory();
 
   const formSchema = Yup.object().shape({
@@ -28,16 +61,14 @@ const Transaction: React.FC = () => {
   });
 
   return (
-    <>
-      <Header size="small" />
-
+    <Modal isOpen={isOpen} onRequestClose={closeModal} style={customStyles}>
       <Container>
         <Formik
           initialValues={{
-            title: '',
-            value: '',
-            selectedType: '',
-            selectedCategory: '',
+            title: editingTransaction.title,
+            value: editingTransaction.value,
+            selectedType: editingTransaction.type,
+            selectedCategory: editingTransaction.category?.title,
             newCategory: '',
           }}
           validationSchema={formSchema}
@@ -49,11 +80,12 @@ const Transaction: React.FC = () => {
               category: values.newCategory || values.selectedCategory,
             };
 
-            await api.post('transactions', data);
+            await api.put(`transactions/${editingTransaction.id}`, data);
 
-            toast.success('Transação registrada!');
+            toast.success('Transação atualizada!');
 
-            return history.push('/dashboard');
+            closeModal();
+            history.push('/');
           }}
         >
           {({
@@ -65,11 +97,12 @@ const Transaction: React.FC = () => {
             isSubmitting,
           }) => (
             <form onSubmit={handleSubmit}>
-              <h2>Cadastre uma transação</h2>
+              <h2>Editar</h2>
               <input
                 type="text"
                 placeholder="Título"
                 name="title"
+                value={values.title}
                 onChange={handleChange}
               />
               {touched.title && errors.title && <div>{errors.title}</div>}
@@ -80,11 +113,17 @@ const Transaction: React.FC = () => {
                 step="0.01"
                 placeholder="Valor. (150.29)"
                 name="value"
+                value={values.value}
                 onChange={handleChange}
               />
               {touched.value && errors.value && <div>{errors.value}</div>}
 
-              <select id="type" name="selectedType" onChange={handleChange}>
+              <select
+                id="type"
+                name="selectedType"
+                onChange={handleChange}
+                value={values.selectedType}
+              >
                 <option value="0">Tipo de transação...</option>
                 <option value="income">Entrada</option>
                 <option value="outcome">Saída</option>
@@ -97,6 +136,7 @@ const Transaction: React.FC = () => {
                 id="category"
                 name="selectedCategory"
                 onChange={handleChange}
+                value={values.selectedCategory}
               >
                 <option value="0">Categoria...</option>
                 <option value="comidas">Comidas</option>
@@ -113,20 +153,21 @@ const Transaction: React.FC = () => {
                   type="text"
                   placeholder="Nova Categoria"
                   name="newCategory"
+                  value={values.newCategory}
                   onChange={handleChange}
                 />
               )}
               {isSubmitting ? (
                 <span>Salvando...</span>
               ) : (
-                <button type="submit">Cadastrar</button>
+                <button type="submit">Salvar</button>
               )}
             </form>
           )}
         </Formik>
       </Container>
-    </>
+    </Modal>
   );
 };
 
-export default Transaction;
+export default EditTransactionModal;
