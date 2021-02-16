@@ -116,25 +116,35 @@ export const PagesButtonsContainer = styled.div`
   display: flex;
   justify-content: center;
   align-self: center;
+  list-style: none;
 
-  button {
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    border: 0;
-    background: #5636d3;
+  .pagination {
     display: flex;
-    align-items: center;
-    justify-content: center;
+    justify-content: start;
+    font-size: 12px;
+    list-style: none;
 
-    svg {
-      color: #fff;
-      width: 25px;
-      height: 25px;
+    a {
+      color: black;
+      float: left;
+      padding: 8px 16px;
+      text-decoration: none;
     }
 
-    & + button {
-      margin-left: 5px;
+    li.active {
+      a {
+        background-color: #5636d3;
+        color: #fff;
+      }
+    }
+
+    a {
+      border-radius: 5px;
+    }
+
+    li:hover:not(.active) {
+      background-color: #ddd;
+      border-radius: 5px;
     }
   }
 `;

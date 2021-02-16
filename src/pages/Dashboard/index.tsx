@@ -1,10 +1,6 @@
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
-import {
-  FiEdit,
-  FiTrash2,
-  FiChevronRight,
-  FiChevronLeft,
-} from 'react-icons/fi';
+import { FiEdit, FiTrash2 } from 'react-icons/fi';
+import Pagination from 'react-js-pagination';
 
 import { toast } from 'react-toastify';
 import income from '../../assets/income.svg';
@@ -53,7 +49,6 @@ const Dashboard: React.FC = () => {
     {} as Transaction,
   );
   const [totalTransactions, setTotalTransactions] = useState(0);
-  const [totalPages, setTotalPages] = useState(0);
 
   const openModal = useCallback((transaction: Transaction) => {
     setEditingTransaction(transaction);
@@ -75,8 +70,7 @@ const Dashboard: React.FC = () => {
     });
 
     setTotalTransactions(response.data.totalTransactions);
-    setTotalPages(Math.ceil(totalTransactions / 10));
-  }, [currentPage, totalTransactions]);
+  }, [currentPage]);
 
   useEffect(() => {
     loadTransactions();
@@ -102,23 +96,9 @@ const Dashboard: React.FC = () => {
     return formatValue(Number(balance.total));
   }, [balance]);
 
-  const handleChangePage = useCallback(
-    (prevOrNext: string) => {
-      if (currentPage === 1 && prevOrNext === 'prev') {
-        return;
-      }
-      if (prevOrNext === 'prev' && currentPage > 1) {
-        setCurrentPage(currentPage - 1);
-      }
-      if (totalPages === currentPage && prevOrNext === 'next') {
-        return;
-      }
-      if (currentPage >= 1 && prevOrNext === 'next') {
-        setCurrentPage(currentPage + 1);
-      }
-    },
-    [currentPage, totalPages],
-  );
+  const handleChangePage = useCallback(prevOrNext => {
+    setCurrentPage(prevOrNext);
+  }, []);
 
   const handleDeleteTransaction = useCallback(
     async (id: string) => {
@@ -218,12 +198,13 @@ const Dashboard: React.FC = () => {
             </tbody>
           </table>
           <PagesButtonsContainer>
-            <button type="button" onClick={() => handleChangePage('prev')}>
-              <FiChevronLeft />
-            </button>
-            <button type="button" onClick={() => handleChangePage('next')}>
-              <FiChevronRight />
-            </button>
+            <Pagination
+              activePage={currentPage}
+              itemsCountPerPage={10}
+              totalItemsCount={totalTransactions}
+              pageRangeDisplayed={5}
+              onChange={handleChangePage}
+            />
           </PagesButtonsContainer>
         </TableContainer>
       </Container>
