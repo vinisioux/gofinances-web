@@ -49,6 +49,7 @@ const Dashboard: React.FC = () => {
     {} as Transaction,
   );
   const [totalTransactions, setTotalTransactions] = useState(0);
+  const [limitPerPage] = useState(5);
 
   const openModal = useCallback((transaction: Transaction) => {
     setEditingTransaction(transaction);
@@ -60,7 +61,9 @@ const Dashboard: React.FC = () => {
   }, []);
 
   const loadTransactions = useCallback(async () => {
-    const response = await api.get(`/transactions?page=${currentPage}`);
+    const response = await api.get(
+      `/transactions?page=${currentPage}&limit=${limitPerPage}`,
+    );
     setTransactions(response.data.transactions);
 
     setBalance({
@@ -70,7 +73,7 @@ const Dashboard: React.FC = () => {
     });
 
     setTotalTransactions(response.data.totalTransactions);
-  }, [currentPage]);
+  }, [currentPage, limitPerPage]);
 
   useEffect(() => {
     loadTransactions();
@@ -200,7 +203,7 @@ const Dashboard: React.FC = () => {
           <PagesButtonsContainer>
             <Pagination
               activePage={currentPage}
-              itemsCountPerPage={10}
+              itemsCountPerPage={limitPerPage}
               totalItemsCount={totalTransactions}
               pageRangeDisplayed={5}
               onChange={handleChangePage}
