@@ -6,12 +6,12 @@ interface ContainerProps {
 
 export const Container = styled.div<ContainerProps>`
   background: #5636d3;
-  padding: 30px 0;
+  padding: 3rem 0;
 
   header {
-    width: 1120px;
+    width: 112rem;
     margin: 0 auto;
-    padding: ${({ size }) => (size === 'small' ? '0 20px ' : '0 20px 150px')};
+    padding: ${({ size }) => (size === 'small' ? '0 2rem ' : '0 2rem 15rem')};
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -20,11 +20,11 @@ export const Container = styled.div<ContainerProps>`
       a {
         color: #fff;
         text-decoration: none;
-        font-size: 16px;
+        font-size: 1.6rem;
         transition: opacity 0.2s;
 
         & + a {
-          margin-left: 32px;
+          margin-left: 3.2rem;
         }
 
         &:hover {
@@ -33,7 +33,7 @@ export const Container = styled.div<ContainerProps>`
       }
 
       button {
-        margin-left: 64px;
+        margin-left: 6.4rem;
         background: 0;
         border: 0;
         transition: opacity 0.2s;
