@@ -3,28 +3,28 @@ import { shade } from 'polished';
 
 export const Container = styled.div`
   width: 100%;
-  max-width: 736px;
+  max-width: 73.6rem;
   margin: 0 auto;
-  padding: 40px 20px;
+  padding: 4rem 2rem;
 `;
 
 export const Title = styled.h1`
   font-weight: 500;
-  font-size: 36px;
-  line-height: 54px;
+  font-size: 3.6rem;
+  line-height: 5.4rem;
   color: #363f5f;
   text-align: center;
 `;
 
 export const ImportFileContainer = styled.section`
   background: #fff;
-  margin-top: 40px;
-  border-radius: 5px;
-  padding: 64px;
+  margin-top: 4rem;
+  border-radius: 0.5rem;
+  padding: 6.4rem;
 `;
 
 export const Footer = styled.section`
-  margin-top: 36px;
+  margin-top: 3.6rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -32,20 +32,20 @@ export const Footer = styled.section`
   p {
     display: flex;
     align-items: center;
-    font-size: 12px;
-    line-height: 18px;
+    font-size: 1.2rem;
+    line-height: 1.8rem;
     color: #969cb3;
 
     img {
-      margin-right: 5px;
+      margin-right: 0.5rem;
     }
   }
 
   button {
     background: #ff872c;
     color: #fff;
-    border-radius: 5px;
-    padding: 15px 80px;
+    border-radius: 0.5rem;
+    padding: 1.5rem 8rem;
     border: 0;
     transition: background-color 0.2s;
 

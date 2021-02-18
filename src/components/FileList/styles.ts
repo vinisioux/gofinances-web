@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 export const Container = styled.ul`
-  margin-top: 20px;
+  margin-top: 2rem;
 
   li {
     display: flex;
@@ -10,7 +10,7 @@ export const Container = styled.ul`
     color: #444;
 
     & + li {
-      margin-top: 15px;
+      margin-top: 1.5rem;
     }
   }
 `;
@@ -25,7 +25,7 @@ export const FileInfo = styled.div`
     border: 0;
     background: transparent;
     color: #e83f5b;
-    margin-left: 5px;
+    margin-left: 0.5rem;
     cursor: pointer;
   }
 
@@ -35,9 +35,9 @@ export const FileInfo = styled.div`
     justify-content: space-between;
 
     span {
-      font-size: 12px;
+      font-size: 1.2rem;
       color: #999;
-      margin-top: 5px;
+      margin-top: 0.5rem;
     }
   }
 `;

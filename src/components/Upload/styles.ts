@@ -19,8 +19,8 @@ const dragReject = css`
 export const DropContainer = styled.div.attrs({
   className: 'dropzone',
 })`
-  border: 1.5px dashed #969cb3;
-  border-radius: 5px;
+  border: 0.15rem dashed #969cb3;
+  border-radius: 0.5rem;
   cursor: pointer;
 
   transition: height 0.2s ease;
@@ -40,9 +40,9 @@ const messageColors = {
 
 export const UploadMessage = styled.p`
   display: flex;
-  font-size: 16px;
-  line-height: 24px;
-  padding: 48px 0;
+  font-size: 1.6rem;
+  line-height: 2.4rem;
+  padding: 4.8rem 0;
 
   color: ${({ type }: UploadProps) => messageColors[type || 'default']};
 

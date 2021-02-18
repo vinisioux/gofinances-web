@@ -11,7 +11,7 @@ export const Container = styled.div`
 
   form {
     width: 100%;
-    max-width: 250px;
+    max-width: 25rem;
     display: flex;
     flex-direction: column;
 
@@ -21,25 +21,25 @@ export const Container = styled.div`
     }
 
     input {
-      margin-top: 20px;
-      border: 1px solid #ddd;
-      border-radius: 4px;
-      height: 48px;
-      padding: 0 20px;
-      font-size: 16px;
+      margin-top: 2rem;
+      border: 0.1rem solid #ddd;
+      border-radius: 0.4rem;
+      height: 4.8rem;
+      padding: 0 2rem;
+      font-size: 1.6rem;
       color: #666;
 
       & + input {
-        margin-top: 5px;
+        margin-top: 0.5rem;
       }
     }
 
     button {
-      margin-top: 10px;
+      margin-top: 1rem;
       border: 0;
-      border-radius: 4px;
-      height: 48px;
-      font-size: 16px;
+      border-radius: 0.4rem;
+      height: 4.8rem;
+      font-size: 1.6rem;
       background: #3bafda;
       font-weight: bold;
       color: #fff;
@@ -51,7 +51,7 @@ export const Container = styled.div`
   }
 
   a {
-    margin-top: 5px;
+    margin-top: 0.5rem;
     text-decoration: none;
     color: #222;
 
@@ -70,5 +70,5 @@ export const Main = styled.div`
 
 export const FormContainer = styled.div`
   background: #5636d3;
-  padding: 250px;
+  padding: 25rem;
 `;
