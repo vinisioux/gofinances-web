@@ -50,11 +50,16 @@ export default createGlobalStyle`
   button {
     cursor: pointer;
     border: 0;
+    background: 0;
   }
 
   ul {
     list-style: none;
     text-align: left;
     padding: 0;
+  }
+
+  a {
+    text-decoration: none;
   }
 `;
