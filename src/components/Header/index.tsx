@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 
 import { Link } from 'react-router-dom';
 import { useAuth } from '../../hooks/auth';
@@ -18,7 +18,16 @@ const Header: React.FC<HeaderProps> = ({ size = 'large' }: HeaderProps) => {
     <Container size={size}>
       <header>
         <img src={Logo} alt="GoFinances" />
-        <nav>
+        <nav className="desk">
+          <Link to="/">Listagem</Link>
+          <Link to="/transaction">Criar</Link>
+          <Link to="/import">Importar</Link>
+          <button type="button" onClick={signOut}>
+            Sair
+          </button>
+        </nav>
+
+        <nav className="smartphone">
           <Link to="/">Listagem</Link>
           <Link to="/transaction">Criar</Link>
           <Link to="/import">Importar</Link>
@@ -31,4 +40,4 @@ const Header: React.FC<HeaderProps> = ({ size = 'large' }: HeaderProps) => {
   );
 };
 
-export default Header;
+export default memo(Header);

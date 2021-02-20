@@ -24,6 +24,10 @@ export const CardContainer = styled.section`
 `;
 
 export const Card = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
   background: ${({ total }: CardProps): string => (total ? '#FF872C' : '#fff')};
   padding: 2.2rem 3.2rem;
   border-radius: 0.5rem;

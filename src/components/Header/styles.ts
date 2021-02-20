@@ -9,14 +9,19 @@ export const Container = styled.div<ContainerProps>`
   padding: 3rem 0;
 
   header {
-    width: 112rem;
+    /* width: 112rem; */
+    width: auto;
     margin: 0 auto;
     padding: ${({ size }) => (size === 'small' ? '0 2rem ' : '0 2rem 15rem')};
     display: flex;
     align-items: center;
     justify-content: space-between;
 
-    nav {
+    nav.smartphone {
+      display: none;
+    }
+
+    nav.desk {
       a {
         color: #fff;
         text-decoration: none;
@@ -34,12 +39,35 @@ export const Container = styled.div<ContainerProps>`
 
       button {
         margin-left: 6.4rem;
-        background: 0;
-        border: 0;
         transition: opacity 0.2s;
 
         &:hover {
           opacity: 0.6;
+        }
+      }
+    }
+
+    @media (max-width: 768px) {
+      nav.desk {
+        display: none;
+      }
+
+      nav.smartphone {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+
+        a {
+          color: #fff;
+
+          & + a {
+            margin-top: 0.2rem;
+          }
+        }
+
+        button {
+          margin-top: 0.2rem;
+          display: flex;
         }
       }
     }
