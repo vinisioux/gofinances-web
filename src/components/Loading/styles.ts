@@ -1,7 +1,7 @@
 import styled, { keyframes, css } from 'styled-components';
 
 interface ContainerProps {
-  loading: boolean;
+  isLoading: boolean;
   color: string;
 }
 
@@ -15,8 +15,8 @@ const rotate = keyframes`
 `;
 
 export const Container = styled.div<ContainerProps>`
-  ${({ loading, color }) =>
-    loading &&
+  ${({ isLoading, color }) =>
+    isLoading &&
     css`
       svg {
         animation: ${rotate} 2s linear infinite;

@@ -10,8 +10,8 @@ import total from '../../assets/total.svg';
 import api from '../../services/api';
 
 import Header from '../../components/Header';
-import EditTransactionModal from '../../components/EditTransactionModal';
 import Loading from '../../components/Loading';
+import EditTransactionModal from '../../components/EditTransactionModal';
 
 import formatValue from '../../utils/formatValue';
 import formatDate from '../../utils/formatDate';
@@ -76,7 +76,7 @@ const Dashboard: React.FC = () => {
     });
 
     setTotalTransactions(response.data.totalTransactions);
-    setLoadingCards(true);
+    setLoadingCards(false);
   }, [currentPage, limitPerPage]);
 
   useEffect(() => {
@@ -131,7 +131,7 @@ const Dashboard: React.FC = () => {
         <CardContainer>
           <Card>
             {incomeBalance === 'R$ NaN' ? (
-              <Loading loading={loadingCards} color="#5636d3" size={40} />
+              <Loading isLoading={loadingCards} color="#5636d3" size={40} />
             ) : (
               <div>
                 <header>
@@ -144,7 +144,7 @@ const Dashboard: React.FC = () => {
           </Card>
           <Card>
             {outcomeBalance === 'R$ NaN' ? (
-              <Loading loading={loadingCards} color="#5636d3" size={40} />
+              <Loading isLoading={loadingCards} color="#5636d3" size={40} />
             ) : (
               <div>
                 <header>
@@ -157,7 +157,7 @@ const Dashboard: React.FC = () => {
           </Card>
           <Card total>
             {outcomeBalance === 'R$ NaN' ? (
-              <Loading loading={loadingCards} color="#5636d3" size={40} />
+              <Loading isLoading={loadingCards} color="#5636d3" size={40} />
             ) : (
               <div>
                 <header>

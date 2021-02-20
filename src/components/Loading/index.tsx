@@ -4,14 +4,14 @@ import { FaSpinner } from 'react-icons/fa';
 import { Container } from './styles';
 
 interface LoadingProps {
-  loading: boolean;
+  isLoading: boolean;
   color: string;
   size: number;
 }
 
-const Loading: React.FC<LoadingProps> = ({ loading, color, size }) => {
+const Loading: React.FC<LoadingProps> = ({ isLoading, color, size }) => {
   return (
-    <Container loading={loading} color={color}>
+    <Container isLoading={isLoading} color={color}>
       <FaSpinner size={size} />
     </Container>
   );
