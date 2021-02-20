@@ -11,6 +11,7 @@ import api from '../../services/api';
 
 import Header from '../../components/Header';
 import EditTransactionModal from '../../components/EditTransactionModal';
+import Loading from '../../components/Loading';
 
 import formatValue from '../../utils/formatValue';
 import formatDate from '../../utils/formatDate';
@@ -50,6 +51,7 @@ const Dashboard: React.FC = () => {
   );
   const [totalTransactions, setTotalTransactions] = useState(0);
   const [limitPerPage] = useState(5);
+  const [loadingCards, setLoadingCards] = useState(false);
 
   const openModal = useCallback((transaction: Transaction) => {
     setEditingTransaction(transaction);
@@ -61,6 +63,7 @@ const Dashboard: React.FC = () => {
   }, []);
 
   const loadTransactions = useCallback(async () => {
+    setLoadingCards(true);
     const response = await api.get(
       `/transactions?page=${currentPage}&limit=${limitPerPage}`,
     );
@@ -73,6 +76,7 @@ const Dashboard: React.FC = () => {
     });
 
     setTotalTransactions(response.data.totalTransactions);
+    setLoadingCards(true);
   }, [currentPage, limitPerPage]);
 
   useEffect(() => {
@@ -126,36 +130,42 @@ const Dashboard: React.FC = () => {
       <Container>
         <CardContainer>
           <Card>
-            <header>
-              <p>Entradas</p>
-              <img src={income} alt="Income" />
-            </header>
             {incomeBalance === 'R$ NaN' ? (
-              <h1>...</h1>
+              <Loading loading={loadingCards} color="#5636d3" size={40} />
             ) : (
-              <h1 data-testid="balance-income">{incomeBalance}</h1>
+              <div>
+                <header>
+                  <p>Entradas</p>
+                  <img src={income} alt="Income" />
+                </header>
+                <h1 data-testid="balance-income">{incomeBalance}</h1>
+              </div>
             )}
           </Card>
           <Card>
-            <header>
-              <p>Saídas</p>
-              <img src={outcome} alt="Outcome" />
-            </header>
             {outcomeBalance === 'R$ NaN' ? (
-              <h1>...</h1>
+              <Loading loading={loadingCards} color="#5636d3" size={40} />
             ) : (
-              <h1 data-testid="balance-income">{outcomeBalance}</h1>
+              <div>
+                <header>
+                  <p>Saídas</p>
+                  <img src={outcome} alt="Outcome" />
+                </header>
+                <h1 data-testid="balance-income">{outcomeBalance}</h1>
+              </div>
             )}
           </Card>
           <Card total>
-            <header>
-              <p>Total</p>
-              <img src={total} alt="Total" />
-            </header>
             {outcomeBalance === 'R$ NaN' ? (
-              <h1>...</h1>
+              <Loading loading={loadingCards} color="#5636d3" size={40} />
             ) : (
-              <h1 data-testid="balance-total">{totalBalance}</h1>
+              <div>
+                <header>
+                  <p>Total</p>
+                  <img src={total} alt="Total" />
+                </header>
+                <h1 data-testid="balance-total">{totalBalance}</h1>
+              </div>
             )}
           </Card>
         </CardContainer>
