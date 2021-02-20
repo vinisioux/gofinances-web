@@ -1,4 +1,11 @@
-import React, { useState, useEffect, useCallback, useMemo } from 'react';
+import React, {
+  useState,
+  useEffect,
+  useCallback,
+  useMemo,
+  Suspense,
+  lazy,
+} from 'react';
 import { FiEdit, FiTrash2 } from 'react-icons/fi';
 import Pagination from 'react-js-pagination';
 
@@ -11,7 +18,6 @@ import api from '../../services/api';
 
 import Header from '../../components/Header';
 import Loading from '../../components/Loading';
-import EditTransactionModal from '../../components/EditTransactionModal';
 
 import formatValue from '../../utils/formatValue';
 import formatDate from '../../utils/formatDate';
@@ -23,6 +29,10 @@ import {
   TableContainer,
   PagesButtonsContainer,
 } from './styles';
+
+const EditTransactionModal = lazy(
+  () => import('../../components/EditTransactionModal'),
+);
 
 interface Transaction {
   id: string;
@@ -122,11 +132,13 @@ const Dashboard: React.FC = () => {
   return (
     <>
       <Header />
-      <EditTransactionModal
-        closeModal={closeModal}
-        isOpen={modalIsOpen}
-        editingTransaction={editingTransaction}
-      />
+      <Suspense fallback={<div>Carregando...</div>}>
+        <EditTransactionModal
+          closeModal={closeModal}
+          isOpen={modalIsOpen}
+          editingTransaction={editingTransaction}
+        />
+      </Suspense>
       <Container>
         <CardContainer>
           <Card>
