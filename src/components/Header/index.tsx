@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 
 import { Link } from 'react-router-dom';
 import { useAuth } from '../../hooks/auth';
@@ -40,4 +40,4 @@ const Header: React.FC<HeaderProps> = ({ size = 'large' }: HeaderProps) => {
   );
 };
 
-export default Header;
+export default memo(Header);
