@@ -77,6 +77,10 @@ export const Card = styled.div`
 
 export const TableContainer = styled.section`
   margin-top: 6.4rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
 
   table {
     width: 100%;
@@ -97,7 +101,7 @@ export const TableContainer = styled.section`
       @media (max-width: 768px) {
         padding: 1rem 1.2rem;
         line-height: 1.2rem;
-        font-size: 1.2rem;
+        font-size: 1.1rem;
       }
     }
 
@@ -110,7 +114,7 @@ export const TableContainer = styled.section`
       color: #969cb3;
 
       @media (max-width: 768px) {
-        padding: 1rem 1.2rem;
+        padding: 1rem 1rem;
         line-height: 1.2rem;
         font-size: 1.1rem;
       }
