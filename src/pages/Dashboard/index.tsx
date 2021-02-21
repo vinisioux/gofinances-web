@@ -96,6 +96,10 @@ const Dashboard: React.FC = () => {
   const transactionsList = useMemo(() => {
     return transactions.map(transaction => ({
       ...transaction,
+      title:
+        transaction.title.length <= 15
+          ? transaction.title
+          : transaction.title.substr(0, 15).concat('...'),
       formattedValue: formatValue(transaction.value),
       formattedDate: formatDate(transaction.created_at),
     }));
@@ -213,13 +217,13 @@ const Dashboard: React.FC = () => {
                         type="button"
                         onClick={() => openModal(transaction)}
                       >
-                        <FiEdit size={20} color="#3bafda" />
+                        <FiEdit color="#3bafda" />
                       </button>
                       <button
                         type="button"
                         onClick={() => handleDeleteTransaction(transaction.id)}
                       >
-                        <FiTrash2 size={20} color="#ff4b5b" />
+                        <FiTrash2 color="#ff4b5b" />
                       </button>
                     </td>
                   </tr>
