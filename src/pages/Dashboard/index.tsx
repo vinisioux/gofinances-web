@@ -132,7 +132,7 @@ const Dashboard: React.FC = () => {
   return (
     <>
       <Header />
-      <Suspense fallback={<div>Carregando...</div>}>
+      <Suspense fallback={<div />}>
         <EditTransactionModal
           closeModal={closeModal}
           isOpen={modalIsOpen}
