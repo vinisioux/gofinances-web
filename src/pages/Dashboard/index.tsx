@@ -181,57 +181,62 @@ const Dashboard: React.FC = () => {
             )}
           </Card>
         </CardContainer>
-
-        <TableContainer>
-          <table>
-            <thead>
-              <tr>
-                <th>Título</th>
-                <th>Preço</th>
-                <th>Categoria</th>
-                <th>Data</th>
-                <th>Ações</th>
-              </tr>
-            </thead>
-            <tbody>
-              {transactionsList.map(transaction => (
-                <tr key={transaction.id}>
-                  <td className="title">{transaction.title}</td>
-                  {transaction.type === 'income' ? (
-                    <td className="income">{transaction.formattedValue}</td>
-                  ) : (
-                    <td className="outcome">{`- ${transaction.formattedValue}`}</td>
-                  )}
-                  <td>{transaction.category.title}</td>
-                  <td>{transaction.formattedDate}</td>
-                  <td className="transaction-actions">
-                    <button
-                      type="button"
-                      onClick={() => openModal(transaction)}
-                    >
-                      <FiEdit size={20} color="#3bafda" />
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => handleDeleteTransaction(transaction.id)}
-                    >
-                      <FiTrash2 size={20} color="#ff4b5b" />
-                    </button>
-                  </td>
+        {loadingCards ? (
+          <div className="loading">
+            <Loading isLoading={loadingCards} color="#5636d3" size={70} />
+          </div>
+        ) : (
+          <TableContainer>
+            <table>
+              <thead>
+                <tr>
+                  <th>Título</th>
+                  <th>Preço</th>
+                  <th>Categoria</th>
+                  <th>Data</th>
+                  <th>Ações</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
-          <PagesButtonsContainer>
-            <Pagination
-              activePage={currentPage}
-              itemsCountPerPage={limitPerPage}
-              totalItemsCount={totalTransactions}
-              pageRangeDisplayed={5}
-              onChange={handleChangePage}
-            />
-          </PagesButtonsContainer>
-        </TableContainer>
+              </thead>
+              <tbody>
+                {transactionsList.map(transaction => (
+                  <tr key={transaction.id}>
+                    <td className="title">{transaction.title}</td>
+                    {transaction.type === 'income' ? (
+                      <td className="income">{transaction.formattedValue}</td>
+                    ) : (
+                      <td className="outcome">{`- ${transaction.formattedValue}`}</td>
+                    )}
+                    <td>{transaction.category.title}</td>
+                    <td>{transaction.formattedDate}</td>
+                    <td className="transaction-actions">
+                      <button
+                        type="button"
+                        onClick={() => openModal(transaction)}
+                      >
+                        <FiEdit size={20} color="#3bafda" />
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => handleDeleteTransaction(transaction.id)}
+                      >
+                        <FiTrash2 size={20} color="#ff4b5b" />
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+            <PagesButtonsContainer>
+              <Pagination
+                activePage={currentPage}
+                itemsCountPerPage={limitPerPage}
+                totalItemsCount={totalTransactions}
+                pageRangeDisplayed={5}
+                onChange={handleChangePage}
+              />
+            </PagesButtonsContainer>
+          </TableContainer>
+        )}
       </Container>
     </>
   );
