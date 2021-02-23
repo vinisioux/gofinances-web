@@ -7,6 +7,7 @@ import * as Yup from 'yup';
 import api from '../../services/api';
 
 import Header from '../../components/Header';
+import CurrencyInput from '../../components/CurrencyInput';
 
 import { Container } from './styles';
 
@@ -18,10 +19,7 @@ const Transaction: React.FC = () => {
       .min(3, 'Título muito pequeno')
       .max(20, 'Título muito grande')
       .required('O título é um campo obrigatório'),
-    value: Yup.number()
-      .min(0.01, 'Valor não permitido')
-      .max(9999999, 'Valor não permitido')
-      .required('Digite um valor'),
+    value: Yup.string().required('Digite um valor'),
     selectedType: Yup.string().required('Selecione um tipo de transação'),
     selectedCategory: Yup.string().required('Selecione uma categoria'),
     newCategory: Yup.string(),
@@ -44,7 +42,12 @@ const Transaction: React.FC = () => {
           onSubmit={async values => {
             const data = {
               title: values.title,
-              value: values.value,
+              value: Number(
+                values.value
+                  .replace('R$ ', '')
+                  .replace('.', '')
+                  .replace(',', '.'),
+              ),
               type: values.selectedType,
               category: values.newCategory || values.selectedCategory,
             };
@@ -76,11 +79,9 @@ const Transaction: React.FC = () => {
                 <span className="error-message">{errors.title}</span>
               )}
 
-              <input
-                type="number"
-                min="0.00"
-                step="0.01"
-                placeholder="Valor. (150.29)"
+              <CurrencyInput
+                placeholder="R$ 1.234,56"
+                type="text"
                 name="value"
                 onChange={handleChange}
               />

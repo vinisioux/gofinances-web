@@ -37,7 +37,7 @@ const EditTransactionModal = lazy(
 interface Transaction {
   id: string;
   title: string;
-  value: number;
+  value: string;
   formattedValue: string;
   formattedDate: string;
   type: 'income' | 'outcome';
@@ -100,7 +100,7 @@ const Dashboard: React.FC = () => {
         transaction.title.length <= 15
           ? transaction.title
           : transaction.title.substr(0, 15).concat('...'),
-      formattedValue: formatValue(transaction.value),
+      formattedValue: formatValue(Number(transaction.value)),
       formattedDate: formatDate(transaction.created_at),
     }));
   }, [transactions]);
